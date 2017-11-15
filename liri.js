@@ -8,24 +8,12 @@ var twitter = require("twitter");
 var request = require("request");
 var spotify = require ("node-spotify-api");
 
-var command = process.argv[2];
-
-// console.log('liri is working');
-
-// console.log(twitterKeys);s
-
-
-// commands
-
-switch(command) {
-	case "my-tweets": myTweets(); break;
-	case "spotify-this-song": spotifyThisSong(); break;
-	case "movie-this": movieThis(); break;
-	case "do-what-it-says": doWhatItSays(); break;
-}
-
 
 // twitter function
+
+	if (process.argv[2] === "my-tweets") {
+	myTweets();
+}
 
 function myTweets() {
 
@@ -47,10 +35,15 @@ function myTweets() {
 				console.log(data);
 		}
 	});
+
 }
 
 
 // spotify function
+
+	if (process.argv[2] === "spotify-this-song") {
+	spotifyThisSong();
+}
 
 function spotifyThisSong() {
 
@@ -80,7 +73,48 @@ function spotifyThisSong() {
 
 
 
-// omdb
+// omdb function
+
+	if (process.argv[2] === "movie-this") {
+	movieThis();
+}
+
+function movieThis() {
+
+	var movieName = process.argv[3];
+
+	var movieUrl = 'http://www.omdbapi.com/?t='+movieName+'&apikey=40e9cece';
+
+	request(movieUrl, function (error, response, body) {
+		if (error) {
+	    return console.log('Error. Try a new movie');
+	  }
+	  else {
+
+	  	var data = JSON.parse(body);
+
+	  	console.log("Title: " + data.Title);
+		console.log("Year Released: " + data.Year);
+		console.log("IMDB Rating: " + data.Ratings[0].Value);
+		console.log("Rotton Tomatoes Rating: " + data.Ratings[1].Value);
+		console.log("Country: " + data.Country);
+		console.log("Language: " + data.Language);
+		console.log("Plot: " + data.Plot);
+		console.log("Actors: " + data.Actors);
+		   }
+	 
+	});
+}
+
+// do-what-it-says function
+
+
+if (process.argv[2] === "do-what-it-says") {
+	doWhatItSays();
+}
+
+
+
 
 
 
